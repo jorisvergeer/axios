@@ -20,7 +20,7 @@ describe('core::mergeConfig', function() {
     var config = {
       url: '__sample url__',
       method: '__sample method__',
-      params: '__sample params__',
+      params: { foo: 'bar', test: [ 'foo', 'bar' ] },
       data: { foo: true }
     };
     var merged = mergeConfig(defaults, config);
@@ -28,6 +28,15 @@ describe('core::mergeConfig', function() {
     expect(merged.method).toEqual(config.method);
     expect(merged.params).toEqual(config.params);
     expect(merged.data).toEqual(config.data);
+  });
+
+  it('should keep nested params in its original format', function() {
+    var config = {
+      params: { foo: 'bar', test: [ 'foo', 'bar' ] },
+    };
+
+    var merged = mergeConfig(defaults, config);
+    expect(merged.params).toEqual(config.params);
   });
 
   it('should not inherit request options', function() {
